@@ -1,0 +1,20 @@
+extends CharacterBody2D
+
+var speed = 400
+
+func _process(delta):
+	var velocity = Vector2.ZERO
+	
+	if Input.is_action_pressed("down"):
+		velocity.y += 1
+	if Input.is_action_pressed("up"):
+		velocity.y -= 1
+	if Input.is_action_pressed("right"):
+		velocity.x += 1
+	if Input.is_action_pressed("left"):
+		velocity.x -= 1
+		
+	if velocity.length() > 0:
+		velocity = velocity.normalized() * speed
+		
+	position += velocity * delta #pos = vel * del makes for a good stick display
