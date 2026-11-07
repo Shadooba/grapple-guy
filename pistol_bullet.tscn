@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://dan6pi1ecdu81"]
+
+[ext_resource type="Script" path="res://pistol_bullet.gd" id="1_cx871"]
+[ext_resource type="Texture2D" uid="uid://dak8okpecdttq" path="res://icon.svg" id="1_tqsur"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m4ai4"]
+size = Vector2(124, 41)
+
+[node name="PistolBullet" type="Node2D"]
+script = ExtResource("1_cx871")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 0.5)
+scale = Vector2(1, 0.304688)
+texture = ExtResource("1_tqsur")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-1, 1.5)
+shape = SubResource("RectangleShape2D_m4ai4")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_area_2d_body_entered"]

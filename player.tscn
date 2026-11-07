@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://c7dr4h6352q64"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_im82u"]
+[ext_resource type="Texture2D" uid="uid://dak8okpecdttq" path="res://icon.svg" id="2_f3xpb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_60qji"]
+radius = 43.0116
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ycw7m"]
+size = Vector2(67.5, 111)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lfjmm"]
+size = Vector2(185, 184)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_im82u")
+
+[node name="Hurtbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_60qji")
+
+[node name="Character" type="Sprite2D" parent="."]
+position = Vector2(0.999998, -1)
+scale = Vector2(0.664063, 0.640625)
+texture = ExtResource("2_f3xpb")
+
+[node name="Hook" type="Sprite2D" parent="."]
+position = Vector2(38.75, 0)
+scale = Vector2(0.613281, 0.101563)
+texture = ExtResource("2_f3xpb")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.7, 0.7)
+
+[node name="Barrel" type="Marker2D" parent="."]
+position = Vector2(77, -1)
+gizmo_extents = 9.0
+
+[node name="MeleeTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="MeleeHitbox" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitbox"]
+position = Vector2(45.25, 0)
+shape = SubResource("RectangleShape2D_ycw7m")
+
+[node name="Icon" type="Sprite2D" parent="MeleeHitbox"]
+position = Vector2(47, 3)
+scale = Vector2(0.609375, 1)
+texture = ExtResource("2_f3xpb")
+
+[node name="DashTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="SpecMeleeHitbox" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpecMeleeHitbox"]
+position = Vector2(-1.5, -1)
+shape = SubResource("RectangleShape2D_lfjmm")
+
+[node name="Icon" type="Sprite2D" parent="SpecMeleeHitbox"]
+position = Vector2(-1.5, -1.78814e-06)
+scale = Vector2(1.47656, 1.45313)
+texture = ExtResource("2_f3xpb")
+
+[connection signal="timeout" from="MeleeTimer" to="." method="_on_melee_timer_timeout"]
+[connection signal="body_entered" from="MeleeHitbox" to="." method="_on_melee_body_entered"]
+[connection signal="timeout" from="DashTimer" to="." method="_on_dash_timer_timeout"]
+[connection signal="body_entered" from="SpecMeleeHitbox" to="." method="_on_spec_melee_body_entered"]
